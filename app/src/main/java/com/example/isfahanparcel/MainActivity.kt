@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                enableUserLocation()
+                // دسترسی مکان تایید شده است
             }
             else -> {
                 ActivityCompat.requestPermissions(
@@ -51,22 +51,10 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                enableUserLocation()
+                // دسترسی مکان توسط کاربر داده شد
             } else {
                 Toast.makeText(this, "دسترسی به مکان رد شد.", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    private fun enableUserLocation() {
-        try {
-            // کُد ایمن برای جلوگیری از خطای کامپایل
-            map?.let { mapView ->
-                // اگر نسخه نشان شما متد خاصی دارد اینجا قرار می‌گیرد، 
-                // در غیر این صورت پرمیشن‌ها اعطا شده و مکان قابل دریافت است.
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
