@@ -7,18 +7,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import org.neshan.mapsengine.MapView
 
 class MainActivity : AppCompatActivity() {
 
-    private var map: MapView? = null
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        map = findViewById(R.id.map)
+        // بررسی و درخواست دسترسی GPS در زمان اجرا
         checkLocationPermission()
     }
 
@@ -51,20 +49,10 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // دسترسی مکان توسط کاربر داده شد
+                // کاربر دسترسی مکان را داد
             } else {
                 Toast.makeText(this, "دسترسی به مکان رد شد.", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        map?.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        map?.onStop()
     }
 }
