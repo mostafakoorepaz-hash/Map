@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         // ۱. بررسی و درخواست پرمیشن مکان از اندروید
         checkLocationPermission()
 
-        // ۲. بارگذاری لینک نقشه اصفهان (این خط صفحه سفید را برطرف می‌کند)
+        // ۲. بارگذاری لینک نقشه اصفهان
         webView.loadUrl("https://tourismapp.isfahan.ir/map")
     }
 
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(
-                        Manifest.originatingProcessId, // یا پرمیشن‌های استاندارد زیر:
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ),
