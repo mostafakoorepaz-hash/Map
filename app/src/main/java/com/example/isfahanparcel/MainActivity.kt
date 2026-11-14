@@ -15,15 +15,15 @@ class MainActivity : AppCompatActivity() {
 
         webView = findViewById(R.id.webView)
         
-        // فعال‌سازی جاوااسکریپت برای بارگذاری کامل سامانه شهرداری
+        // فعال‌سازی جاوااسکریپت
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         
         // باز شدن لینک‌ها درون خود اپلیکیشن
         webView.webViewClient = WebViewClient()
 
-        // لینک استعلام عوارض نوسازی اصفهان
-        val url = "https://srv.isfahan.ir/citizen/?formName=UBedehiAvaarezNosazi&cf=App&token=6YDXj3C780Q6Uy780D88Dhs0u6ynUq&cf=App&token=43R9TmmVq9Vzc242QdX4KQL7EWzBz4"
+        // لینک جدید سامانه گردشگری/نقشه اصفهان
+        val url = "https://tourismapp.isfahan.ir/map?token=B9q4m68vAJmit6Rt2RTUoIz6ibmxS9"
         
         webView.loadUrl(url)
     }
