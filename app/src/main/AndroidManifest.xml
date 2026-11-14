@@ -10,9 +10,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:roundIcon="@android:drawable/ic_menu_mapmode"
+        android:label="Isfahan Parcel"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
