@@ -43,23 +43,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // تزریق CSS دقیق برای پررنگ کردن خطوط پارسل و مرزها
+        // تزریق اسکریپت پیشرفته برای افزایش کنتراست و برجسته کردن خطوط نقشه
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 
-                // این اسکریپت خطوط برداری، مرزها و مسیرها را در نقشه پررنگ‌تر و مشکی‌تر می‌کند
-                val parcelBoldScript = "javascript:(function() {" +
+                // این اسکریپت هم کنتراست را بالا می‌برد و هم رنگ‌های روشن نقشه را تیره و پررنگ می‌کند
+                val enhancedContrastScript = "javascript:(function() {" +
                         "var style = document.createElement('style');" +
-                        "style.innerHTML = '" +
-                        "path, line, polygon, .leaflet-interactive {" +
-                        "   stroke: #333333 !important;" +
-                        "   stroke-width: 1.5px !important;" +
-                        "}" +
-                        "';" +
+                        "style.innerHTML = 'html, body, div, canvas, img {" +
+                        "   filter: contrast(170%) brightness(90%) !important;" +
+                        "}' ;" +
                         "document.head.appendChild(style);" +
                         "})();"
-                view?.evaluateJavascript(parcelBoldScript, null)
+                view?.evaluateJavascript(enhancedContrastScript, null)
             }
         }
 
