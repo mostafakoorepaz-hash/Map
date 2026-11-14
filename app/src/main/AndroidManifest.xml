@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_adaptive_fore"
         android:roundIcon="@mipmap/ic_launcher"
-        android:label="Isfahan Parcel"
+        android:label="نقشه اصفهان"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
