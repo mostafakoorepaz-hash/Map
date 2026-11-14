@@ -23,29 +23,28 @@ class MainActivity : AppCompatActivity() {
 
         webView = findViewById(R.id.webView)
 
-        // تنظیمات ضروری برای اجرای نقشه و جاوااسکریپت در وب‌ویو
+        // تنظیمات ضروری برای اجرای وب‌ویو، جاوااسکریپت و ذخیره‌سازی محلی
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.databaseEnabled = true
 
-        // فعال‌سازی دسترسی به موقعیت مکانی (GPS) برای کدهای داخل WebView
+        // اعطای دسترسی GPS به نقشه داخل وب‌ویو به صورت خودکار
         webView.webChromeClient = object : WebChromeClient() {
             override fun onGeolocationPermissionsShowPrompt(
                 origin: String?,
                 callback: GeolocationPermissions.Callback?
             ) {
-                // تایید خودکار درخواست موقعیت مکانی از طرف صفحه وب
                 callback?.invoke(origin, true, false)
             }
         }
 
         webView.webViewClient = WebViewClient()
 
-        // بررسی و گرفتن پرمیشن‌های GPS از اندروید
+        // ۱. بررسی و درخواست پرمیشن مکان از اندروید
         checkLocationPermission()
 
-        // TODO: لینک وب‌سایت یا نقشه خودتان را اینجا قرار دهید (مثلاً آدرس پنل یا فایل نقشه آنلاین)
-        // webView.loadUrl("https://example.com/map.html")
+        // ۲. بارگذاری لینک نقشه اصفهان (این خط صفحه سفید را برطرف می‌کند)
+        webView.loadUrl("https://tourismapp.isfahan.ir/map")
     }
 
     private fun checkLocationPermission() {
@@ -54,12 +53,13 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                // پرمیشن قبلاً داده شده است
+                // دسترسی مکان از قبل تایید شده است
             }
             else -> {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(
+                        Manifest.originatingProcessId, // یا پرمیشن‌های استاندارد زیر:
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ),
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // کاربر دسترسی مکان را تایید کرد
+                // کاربر دسترسی مکان را داد
             } else {
                 Toast.makeText(this, "دسترسی به مکان رد شد.", Toast.LENGTH_SHORT).show()
             }
