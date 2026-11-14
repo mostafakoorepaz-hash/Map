@@ -24,16 +24,16 @@ class MainActivity : AppCompatActivity() {
 
         webView = findViewById(R.id.webView)
 
-        // تنظیمات ضروری برای اجرای وب‌ویو، جاوااسکریپت و ذخیره‌سازی محلی
+        // تنظیمات ضروری برای وب‌ویو
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.databaseEnabled = true
 
-        // پاک کردن کش و تاریخچه هنگام شروع برنامه برای بارگذاری تازه
+        // پاک کردن کش و تاریخچه هنگام شروع برنامه
         webView.clearCache(true)
         webView.clearHistory()
 
-        // اعطای دسترسی GPS به نقشه داخل وب‌ویو به صورت خودکار
+        // اعطای دسترسی GPS به نقشه
         webView.webChromeClient = object : WebChromeClient() {
             override fun onGeolocationPermissionsShowPrompt(
                 origin: String?,
@@ -43,15 +43,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        webView.webViewClient = WebViewClient()
+        // تزریق CSS دقیق برای پررنگ کردن خطوط پارسل و مرزها
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                
+                // این اسکریپت خطوط برداری، مرزها و مسیرها را در نقشه پررنگ‌تر و مشکی‌تر می‌کند
+                val parcelBoldScript = "javascript:(function() {" +
+                        "var style = document.createElement('style');" +
+                        "style.innerHTML = '" +
+                        "path, line, polygon, .leaflet-interactive {" +
+                        "   stroke: #333333 !important;" +
+                        "   stroke-width: 1.5px !important;" +
+                        "}" +
+                        "';" +
+                        "document.head.appendChild(style);" +
+                        "})();"
+                view?.evaluateJavascript(parcelBoldScript, null)
+            }
+        }
 
-        // ۱. بررسی و درخواست پرمیشن مکان از اندروید
+        // بررسی و درخواست پرمیشن مکان
         checkLocationPermission()
 
-        // ۲. بارگذاری لینک نقشه اصفهان
+        // بارگذاری لینک نقشه اصفهان
         webView.loadUrl("https://tourismapp.isfahan.ir/map")
 
-        // ۳. مدیریت دکمه Back برای بازگشت در وب‌ویو یا خروج تمیز با پاکسازی حافظه
+        // مدیریت دکمه Back
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (webView.canGoBack()) {
@@ -70,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                // دسترسی مکان از قبل تایید شده است
+                // دسترسی مکان تایید شده است
             }
             else -> {
                 ActivityCompat.requestPermissions(
@@ -93,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // کاربر دسترسی مکان را داد
+                // دسترسی مکان داده شد
             } else {
                 Toast.makeText(this, "دسترسی به مکان رد شد.", Toast.LENGTH_SHORT).show()
             }
