@@ -11,17 +11,17 @@ import org.neshan.mapsengine.MapView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var map: MapView
+    private var map: MapView? = null
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // مقداردهی اولیه نقشه (مطمئن شوید id نقشه در لایوت activity_main.xml برابر با map باشد)
+        // پیدا کردن امن کامپوننت نقشه با فرض اینکه id آن در لایوت map است
         map = findViewById(R.id.map)
 
-        // بررسی و درخواست دسترسی GPS در زمان اجرا
+        // بررسی و درخواست دسترسی GPS
         checkLocationPermission()
     }
 
@@ -62,12 +62,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun enableUserLocation() {
-        // فعال‌سازی ایمن لایه لوکیشن بدون خطای کامپایل
         try {
-            // اگر از لایه موقعیت پیش‌فرض نشان استفاده می‌کنید
-            val settings = map.settings
-            if (settings != null) {
-                settings.isMyLocationLayerEnabled = true
+            // فعال‌سازی لایه مکان روی نقشه به صورت ایمن
+            map?.let { mapView ->
+                val settings = mapView.settings
+                settings?.isMyLocationLayerEnabled = true
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -76,11 +75,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        map.onStart()
+        map?.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        map.onStop()
+        map?.onStop()
     }
 }
