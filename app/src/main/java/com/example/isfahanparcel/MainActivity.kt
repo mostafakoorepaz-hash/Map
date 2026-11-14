@@ -43,22 +43,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // تزریق اسکریپت پیشرفته برای افزایش کنتراست و برجسته کردن خطوط نقشه
-        webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                
-                // این اسکریپت هم کنتراست را بالا می‌برد و هم رنگ‌های روشن نقشه را تیره و پررنگ می‌کند
-                val enhancedContrastScript = "javascript:(function() {" +
-                        "var style = document.createElement('style');" +
-                        "style.innerHTML = 'html, body, div, canvas, img {" +
-                        "   filter: contrast(170%) brightness(90%) !important;" +
-                        "}' ;" +
-                        "document.head.appendChild(style);" +
-                        "})();"
-                view?.evaluateJavascript(enhancedContrastScript, null)
-            }
-        }
+        webView.webViewClient = WebViewClient()
 
         // بررسی و درخواست پرمیشن مکان
         checkLocationPermission()
@@ -66,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         // بارگذاری لینک نقشه اصفهان
         webView.loadUrl("https://tourismapp.isfahan.ir/map")
 
-        // مدیریت دکمه Back
+        // مدیریت دکمه Back برای خروج تمیز یا بازگشت در وب‌ویو
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (webView.canGoBack()) {
