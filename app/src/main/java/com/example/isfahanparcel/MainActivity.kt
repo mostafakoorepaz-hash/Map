@@ -1,4 +1,4 @@
-package com.example.isfahanparcel // پکیج اپلیکیشن خودتان را اینجا قرار دهید
+package com.example.isfahanparcel
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,11 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.carto.styles.Color
-import com.carto.styles.MarkerStyleBuilder
-import com.carto.utils.BitmapUtils
 import org.neshan.mapsengine.MapView
-import org.neshan.common.model.LatLng
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,10 +16,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main) // لایوت حاوی MapView
+        setContentView(R.layout.activity_main)
 
-        // مقداردهی اولیه نقشه
-        map = findViewById(R.id.map) // مطمئن شوید آی‌دی نقشه در xml همین است
+        // مقداردهی اولیه نقشه (مطمئن شوید id نقشه در لایوت activity_main.xml برابر با map باشد)
+        map = findViewById(R.id.map)
 
         // بررسی و درخواست دسترسی GPS در زمان اجرا
         checkLocationPermission()
@@ -35,11 +31,9 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                // اگر دسترسی قبلاً داده شده بود، موقعیت را روی نقشه فعال کن
                 enableUserLocation()
             }
             else -> {
-                // درخواست دسترسی از کاربر
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(
@@ -52,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // دریافت نتیجه پاسخ کاربر به دیالوگ پرمیشن
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -61,24 +54,21 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // کاربر دسترسی را داد
                 enableUserLocation()
             } else {
-                // کاربر دسترسی را رد کرد
-                Toast.makeText(this, "دسترسی به مکان رد شد. نمایش موقعیت امکان‌پذیر نیست.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "دسترسی به مکان رد شد.", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun enableUserLocation() {
-        // فعال‌سازی لایه موقعیت کاربر در نقشه نشان
+        // فعال‌سازی ایمن لایه لوکیشن بدون خطای کامپایل
         try {
-            // در SDK نشان معمولاً با فعال کردن لایه لوکیشن، موقعیت و دایره آبی مدیریت می‌شود
-            map.isMyLocationEnabled = true
-            map.isMyLocationZoomEnabled = true
-            
-            // اگر خواستید روی موقعیت کاربر زوم کنید یا لایه را ردیابی کنید:
-            // map.settings.isMyLocationLayerEnabled = true
+            // اگر از لایه موقعیت پیش‌فرض نشان استفاده می‌کنید
+            val settings = map.settings
+            if (settings != null) {
+                settings.isMyLocationLayerEnabled = true
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
