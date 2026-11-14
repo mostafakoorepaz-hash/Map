@@ -8,6 +8,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         webView.settings.domStorageEnabled = true
         webView.settings.databaseEnabled = true
 
+        // پاک کردن کش و تاریخچه هنگام شروع برنامه برای بارگذاری تازه
+        webView.clearCache(true)
+        webView.clearHistory()
+
         // اعطای دسترسی GPS به نقشه داخل وب‌ویو به صورت خودکار
         webView.webChromeClient = object : WebChromeClient() {
             override fun onGeolocationPermissionsShowPrompt(
@@ -45,6 +50,18 @@ class MainActivity : AppCompatActivity() {
 
         // ۲. بارگذاری لینک نقشه اصفهان
         webView.loadUrl("https://tourismapp.isfahan.ir/map")
+
+        // ۳. مدیریت دکمه Back برای بازگشت در وب‌ویو یا خروج تمیز با پاکسازی حافظه
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (webView.canGoBack()) {
+                    webView.goBack()
+                } else {
+                    webView.clearCache(true)
+                    finish()
+                }
+            }
+        })
     }
 
     private fun checkLocationPermission() {
